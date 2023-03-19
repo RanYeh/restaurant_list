@@ -19,12 +19,24 @@ app.get('/', (req, res) => {
   res.render('index', { restaurants: restaurantList.results })
 })
 
-app.get('/restaurants/:restaurant_id', (req, res) => {
-  const restaurant = restaurantList.results.find(item => item.id.toString() === req.params.restaurant_id)
+app.get('/restaurants/:restaurantId', (req, res) => {
+  const restaurant = restaurantList.results.find(item => item.id.toString() === req.params.restaurantId)
   
   res.render('show', { restaurant: restaurant })
 })
 
+app.get('/search', (req,res) => {
+  if (!req.query.keyword) {
+    return res.redirect('/')
+  }
+  
+  const keyword = req.query.keyword.trim().toLowerCase()
+  const restaurants = restaurantList.results.filter(restaurant => {
+    return restaurant.category.includes(keyword) || restaurant.name.includes(keyword) || restaurant.name_en.toLowerCase().includes(keyword)
+  })
+
+  res.render('index', { restaurants: restaurants, keyword: keyword })
+})
 
 //-- Start and listen on the express server
 app.listen(port, () => {
