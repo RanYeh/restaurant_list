@@ -19,6 +19,12 @@ app.get('/', (req, res) => {
   res.render('index', { restaurants: restaurantList.results })
 })
 
+app.get('/restaurants/:restaurant_id', (req, res) => {
+  const restaurant = restaurantList.results.find(item => item.id.toString() === req.params.restaurant_id)
+  
+  res.render('show', { restaurant: restaurant })
+})
+
 
 //-- Start and listen on the express server
 app.listen(port, () => {
