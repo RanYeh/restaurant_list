@@ -16,7 +16,7 @@ app.use(express.static('public'))
 
 //-- Set routes
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index', { restaurants: restaurantList.results })
 })
 
 
