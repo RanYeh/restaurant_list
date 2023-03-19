@@ -3,6 +3,7 @@
 ## 專案畫面
 
 ![Front Page](./public/images/snapshot.jpg)
+&emsp;
 ![Restaurant's Detail Page ](./public/images/snapshot_detail.jpg)
 
 ## 專案介紹
@@ -22,9 +23,9 @@
 2. clone 此專案到本地
 3. 在本地透過終端機進入資料夾，輸入：
     
-    ``` bash
-    npm install
-    ```
+  ``` bash
+  npm install
+  ```
 
 4. 安裝完成後，輸入：
 
