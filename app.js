@@ -2,10 +2,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbrs = require('express-handlebars')
-const Restaurant = require('./models/restaurant')
-const restaurant = require('./models/restaurant')
-// const restaurantList = require('./restaurant.json')
+const methodOverride = require('method-override')
 
+const Restaurant = require('./models/restaurant')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -32,6 +31,9 @@ app.set('view engine', 'handlebars')
 
 //-- Use bodyParser
 app.use(express.urlencoded({ extended: true }))
+
+//-- Use methodOverride
+app.use(methodOverride('_method'))
 
 //-- Set static files
 app.use(express.static('public'))
@@ -74,7 +76,7 @@ app.get('/search', (req,res) => {
     })
 })
 
-app.get('/new', (req, res) => {
+app.get('/restaurants/new', (req, res) => {
   // 新增餐廳頁面
   res.render('new')
 })
@@ -95,7 +97,7 @@ app.get('/restaurants/:restaurantId/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
-app.post('/restaurants/:restaurantId/edit', (req, res) => {
+app.put('/restaurants/:restaurantId', (req, res) => {
   // 編輯餐廳資訊
   const restaurantId = req.params.restaurantId
   Restaurant.findByIdAndUpdate(restaurantId, req.body)
@@ -103,7 +105,7 @@ app.post('/restaurants/:restaurantId/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:restaurantId/delete', (req, res) => {
+app.delete('/restaurants/:restaurantId', (req, res) => {
   // 刪除餐廳
   const restaurantId = req.params.restaurantId
   Restaurant.findByIdAndDelete(restaurantId)
