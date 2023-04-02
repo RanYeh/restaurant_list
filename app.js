@@ -86,6 +86,25 @@ app.post('/restaurants', (req, res) => {
     .catch(error => console.error(error))
 })
 
+app.get('/restaurants/:restaurantId/edit', (req, res) => {
+  // 餐廳資訊編輯頁面
+  const restaurantId = req.params.restaurantId
+  Restaurant.findById(restaurantId)
+    .lean()
+    .then(restaurantData => res.render("edit", { restaurant: restaurantData }))
+    .catch(err => console.log(err))
+})
+
+app.post('/restaurants/:restaurantId/edit', (req, res) => {
+  // 編輯餐廳資訊
+  const restaurantId = req.params.restaurantId
+  Restaurant.findByIdAndUpdate(restaurantId, req.body)
+    .then(() => res.redirect(`/restaurants/${restaurantId}`))
+    .catch(error => console.log(error))
+})
+
+
+
 //-- Start and listen on the express server
 app.listen(port, () => {
   console.log(`Express server is listening on http://localhost:${port}`)
