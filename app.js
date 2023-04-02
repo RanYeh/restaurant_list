@@ -103,7 +103,13 @@ app.post('/restaurants/:restaurantId/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-
+app.post('/restaurants/:restaurantId/delete', (req, res) => {
+  // 刪除餐廳
+  const restaurantId = req.params.restaurantId
+  Restaurant.findByIdAndDelete(restaurantId)
+    .then(() => res.redirect("/"))
+    .catch(error => console.log(error))
+})
 
 //-- Start and listen on the express server
 app.listen(port, () => {
