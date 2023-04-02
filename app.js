@@ -2,7 +2,10 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbrs = require('express-handlebars')
-const restaurantList = require('./restaurant.json')
+const Restaurant = require('./models/restaurant')
+const restaurant = require('./models/restaurant')
+// const restaurantList = require('./restaurant.json')
+
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -35,13 +38,20 @@ app.use(express.static('public'))
 
 //-- Set routes
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurantList.results })
+  Restaurant
+    .find() // 取出 Restaurant model 裡的所有資料
+    .lean() // 將 monggose 的 model 物件轉換成乾淨的 js 資料陣列
+    .sort({id: 'asc'})
+    .then(restaurantsData => res.render('index', { restaurants: restaurantsData }))
+    .catch(error => console.error(error))
 })
 
 app.get('/restaurants/:restaurantId', (req, res) => {
-  const restaurant = restaurantList.results.find(item => item.id.toString() === req.params.restaurantId)
-  
-  res.render('show', { restaurant: restaurant })
+  const restaurantId = req.params.restaurantId
+  Restaurant.findOne({ id: restaurantId })
+    .lean()
+    .then(restaurantData => res.render('show', { restaurant: restaurantData }))
+    .catch(error => console.error(error))
 })
 
 app.get('/search', (req,res) => {
@@ -50,11 +60,15 @@ app.get('/search', (req,res) => {
   }
   
   const keyword = req.query.keyword.trim().toLowerCase()
-  const restaurants = restaurantList.results.filter(restaurant => {
-    return restaurant.category.includes(keyword) || restaurant.name.includes(keyword) || restaurant.name_en.toLowerCase().includes(keyword)
-  })
 
-  res.render('index', { restaurants: restaurants, keyword: keyword })
+  Restaurant.find()
+    .lean()
+    .then(restaurantsData => {
+      const restaurants = restaurantsData.filter(restaurant => {
+        return restaurant.category.includes(keyword) || restaurant.name.includes(keyword) || restaurant.name_en.toLowerCase().includes(keyword)
+      })
+      res.render('index', { restaurants, keyword})
+    })
 })
 
 //-- Start and listen on the express server
