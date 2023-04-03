@@ -1,3 +1,6 @@
+<!-- import scripts -->
+<script src="../events.js"></script>
+
 <!-- search bar -->
 <div class="container search-bar">
   <div class="search-bar-outer">
@@ -15,10 +18,10 @@
 
           <div class="input-group col">
             <select class="form-select" id="sort" name="sort">
-              <option>A > Z</option>
-              <option>Z > A</option>
-              <option>類別</option>
-              <option>地區</option>
+              <option value="ascent">A > Z</option>
+              <option value="descent">Z > A</option>
+              <option value="category">類別</option>
+              <option value="location">地區</option>
             </select>
           </div>   
         </div>
@@ -66,3 +69,4 @@
     </div>
   </div>
 </div>
+
