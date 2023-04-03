@@ -3,6 +3,11 @@ const router = express.Router()
 
 const Restaurant = require('../../models/restaurant')
 
+router.get('/new', (req, res) => {
+  // 新增餐廳頁面
+  res.render('new')
+})
+
 router.get('/:restaurantId', (req, res) => {
   // 瀏覽特定餐廳頁面
   const restaurantId = req.params.restaurantId
@@ -10,11 +15,6 @@ router.get('/:restaurantId', (req, res) => {
     .lean()
     .then(restaurantData => res.render('show', { restaurant: restaurantData }))
     .catch(error => console.error(error))
-})
-
-router.get('/new', (req, res) => {
-  // 新增餐廳頁面
-  res.render('new')
 })
 
 router.post('/', (req, res) => {
